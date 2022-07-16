@@ -12,13 +12,19 @@ type UserRepository struct {
 }
 
 func (r *UserRepository) Create(u *model.User) error {
-	return r.store.db.QueryRow(
+	u.EncryptedPassword = u.Password
+	err := r.store.db.QueryRow(
 		"INSERT INTO users (email, encrypted_password) values ($1, $2) RETURNING id",
 		u.Email,
 		u.EncryptedPassword,
 	).Scan(&u.ID)
 
-	//r.logger.Info("USER CREATED")
+	if err != nil {
+		return err
+	}
+
+	r.logger.Info("USER CREATED")
+	return nil
 }
 
 func (r *UserRepository) FindByEmail(email string) (*model.User, error) {
