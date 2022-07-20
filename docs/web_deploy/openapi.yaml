@@ -1,0 +1,75 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: testService
+  description: ''
+servers:
+  - url: 'https://api.demo.tokend.io'
+    description: TokenD Developer Environment
+paths: {}
+components:
+  schemas:
+    Component:
+      allOf:
+        - $ref: '#/components/schemas/ComponentKey'
+        - type: object
+          required:
+            - attributes
+            - relationships
+          properties:
+            attributes:
+              type: object
+              required:
+                - field1
+                - filed2
+              properties:
+                field1:
+                  type: string
+                  description: field 1 description
+                field2:
+                  type: array
+                  items:
+                    type: string
+                field3:
+                  type: integer
+                field4:
+                  type: string
+    ComponentKey:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          type: string
+          enum:
+            - component
+  parameters:
+    pageLimitParam:
+      in: query
+      name: 'page[limit]'
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 15
+        description: Numbers of items per page to return.
+    pageNumberParam:
+      in: query
+      name: 'page[number]'
+      required: false
+      schema:
+        type: integer
+      description: The number of a page to return.
+    sortingParam:
+      in: query
+      name: 'page[order]'
+      required: false
+      schema:
+        type: string
+        enum:
+          - asc
+          - desc
+        default: desc
+        description: 'Order of records on the page. If sortingParam is not specified, order of records is by default sorted by ID.'

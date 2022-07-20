@@ -1,0 +1,15 @@
+log:
+  disable_sentry: true
+
+db:
+  url: postgres://mark:123@localhost:5432/testdb?sslmode=disable
+
+listener:
+  addr: :8081
+
+cop:
+  disabled: true
+  endpoint: "http://localhost:8082"
+  upstream: "http://localhost:8000"
+  service_name: testService
+  service_port: 80
