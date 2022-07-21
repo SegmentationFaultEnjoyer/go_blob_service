@@ -1,6 +1,9 @@
 package store
 
-import "testService/internal/model"
+import (
+	"testService/internal/model"
+	"testService/resources"
+)
 
 type UserRepository interface {
 	Create(*model.User) error
@@ -8,9 +11,10 @@ type UserRepository interface {
 }
 
 type BlobRepository interface {
-	Create(*model.BlobMainData) error
-	DeleteBlob(int) error
-	GetBlobByID(int) (*model.BlobMainData, error)
-	GetAllBlobs(int) ([]*model.BlobMainData, error)
-	GenerateBlob(string, string, string, string, string, string) (*model.BlobMainData, error)
+	Create(*resources.Blob) error
+	DeleteBlob(string) error
+	GetBlobByID(string) (*resources.BlobResponse, error)
+	GetAllBlobs(string) (*resources.BlobListResponse, error)
+	GenerateBlob(string, string, string, string,
+		string, string, string, string, string) (*resources.Blob, error)
 }
