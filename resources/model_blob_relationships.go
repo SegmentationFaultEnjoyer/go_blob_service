@@ -5,5 +5,5 @@
 package resources
 
 type BlobRelationships struct {
-	Author *Relation `json:"author,omitempty"`
+	Author Relation `json:"author"`
 }

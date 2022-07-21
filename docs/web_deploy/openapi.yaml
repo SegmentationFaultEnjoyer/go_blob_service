@@ -18,11 +18,15 @@ components:
           properties:
             attributes:
               type: object
+              required:
+                - title
               properties:
                 title:
                   type: string
             relationships:
               type: object
+              required:
+                - author
               properties:
                 author:
                   $ref: '#/components/schemas/Relation'

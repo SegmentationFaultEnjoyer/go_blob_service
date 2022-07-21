@@ -5,5 +5,5 @@
 package resources
 
 type BlobAttributes struct {
-	Title *string `json:"title,omitempty"`
+	Title string `json:"title"`
 }
