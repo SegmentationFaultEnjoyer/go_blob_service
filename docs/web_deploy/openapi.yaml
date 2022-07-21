@@ -6,12 +6,11 @@ info:
 servers:
   - url: 'https://api.demo.tokend.io'
     description: TokenD Developer Environment
-paths: {}
 components:
   schemas:
-    Component:
+    Blob:
       allOf:
-        - $ref: '#/components/schemas/ComponentKey'
+        - $ref: '#/components/schemas/BlobKey'
         - type: object
           required:
             - attributes
@@ -19,31 +18,26 @@ components:
           properties:
             attributes:
               type: object
-              required:
-                - field1
-                - filed2
               properties:
-                field1:
+                title:
                   type: string
-                  description: field 1 description
-                field2:
-                  type: array
-                  items:
-                    type: string
-                field3:
-                  type: integer
-                field4:
-                  type: string
-    ComponentKey:
+            relationships:
+              type: object
+              properties:
+                author:
+                  $ref: '#/components/schemas/Relation'
+    BlobKey:
       type: object
+      required:
+        - id
+        - type
       properties:
         id:
           type: string
-          example: '1'
         type:
           type: string
           enum:
-            - component
+            - blob
   parameters:
     pageLimitParam:
       in: query

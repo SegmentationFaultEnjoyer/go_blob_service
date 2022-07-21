@@ -11,13 +11,12 @@
       "description": "TokenD Developer Environment"
     }
   ],
-  "paths": {},
   "components": {
     "schemas": {
-      "Component": {
+      "Blob": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/ComponentKey"
+            "$ref": "#/components/schemas/BlobKey"
           },
           {
             "type": "object",
@@ -28,26 +27,17 @@
             "properties": {
               "attributes": {
                 "type": "object",
-                "required": [
-                  "field1",
-                  "filed2"
-                ],
                 "properties": {
-                  "field1": {
-                    "type": "string",
-                    "description": "field 1 description"
-                  },
-                  "field2": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "field3": {
-                    "type": "integer"
-                  },
-                  "field4": {
+                  "title": {
                     "type": "string"
+                  }
+                }
+              },
+              "relationships": {
+                "type": "object",
+                "properties": {
+                  "author": {
+                    "$ref": "#/components/schemas/Relation"
                   }
                 }
               }
@@ -55,17 +45,20 @@
           }
         ]
       },
-      "ComponentKey": {
+      "BlobKey": {
         "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
         "properties": {
           "id": {
-            "type": "string",
-            "example": "1"
+            "type": "string"
           },
           "type": {
             "type": "string",
             "enum": [
-              "component"
+              "blob"
             ]
           }
         }
