@@ -1,0 +1,57 @@
+post:
+  tags:
+    - Blob
+  summary: Blob
+  description: "Create blob\n\n\U0001F512 An admin's signature is needed\n"
+  operationId: createBlob
+  responses:
+    '201':
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: object
+                required: true
+                $ref: '#/components/schemas/Blob'
+    '400':
+      description: bad request
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Errors'
+    '422':
+      description: failed blob adding to database
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Errors'
+    '500':
+      description: failed to generate blob
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Errors'
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - data
+          properties:
+            data:
+              type: object
+              required: true
+              $ref: '#/components/schemas/Blob'
+      application/xml:
+        schema:
+          type: object
+          properties:
+            data:
+              type: object
+              required: true
+              $ref: '#/components/schemas/Blob'
+    required: true

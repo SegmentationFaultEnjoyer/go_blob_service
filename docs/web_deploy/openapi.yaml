@@ -6,6 +6,142 @@ info:
 servers:
   - url: 'https://api.demo.tokend.io'
     description: TokenD Developer Environment
+paths:
+  /blob:
+    post:
+      tags:
+        - Blob
+      summary: Blob
+      description: "Create blob\n\n\U0001F512 An admin's signature is needed\n"
+      operationId: createBlob
+      responses:
+        '201':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    required: true
+                    $ref: '#/components/schemas/Blob'
+        '400':
+          description: bad request
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '422':
+          description: failed blob adding to database
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '500':
+          description: failed to generate blob
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data
+              properties:
+                data:
+                  type: object
+                  required: true
+                  $ref: '#/components/schemas/Blob'
+          application/xml:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: object
+                  required: true
+                  $ref: '#/components/schemas/Blob'
+        required: true
+  '/blob/{id}':
+    parameters:
+      - name: id
+        in: path
+        description: Blob identifier
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - Blob
+      summary: Blob
+      description: "\n\U0001F512 An admin's signature is needed for private blobs\n"
+      operationId: getBlob
+      responses:
+        '302':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/Blob'
+        '422':
+          description: failed to get from database
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+    delete:
+      tags:
+        - Blob
+      summary: Remove Blob
+      description: " \n\n\U0001F512 An admin's signature is needed\n"
+      operationId: deleteBlob
+      responses:
+        '202':
+          description: Success
+        '422':
+          description: failed to delete from database
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+  '/blobs/{user_id}':
+    parameters:
+      - name: user_id
+        in: path
+        description: Blobs identifier
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - Blob
+      summary: Blob
+      description: "\n\U0001F512 An admin's signature is needed for private blobs\n"
+      operationId: getUserBlobs
+      responses:
+        '202':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Blob'
+        '422':
+          description: failed to get from database
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Errors'
 components:
   schemas:
     Blob:
@@ -42,6 +178,37 @@ components:
           type: string
           enum:
             - blob
+    Errors:
+      description: 'Standard JSON:API error'
+      type: object
+      required:
+        - errors
+      properties:
+        errors:
+          type: array
+          description: Non-empty array of errors occurred during the request processing
+          items:
+            type: object
+            required:
+              - title
+              - status
+            properties:
+              title:
+                type: string
+                description: 'Short, human-readable summary of the problem'
+                example: Bad Request
+              detail:
+                type: string
+                description: Human-readable explanation specific to this occurrence of the problem
+                example: Request body was expected
+              status:
+                type: integer
+                description: HTTP status code applicable to this problem
+                example: 400
+                enum:
+                  - 400
+                  - 422
+                  - 500
   parameters:
     pageLimitParam:
       in: query

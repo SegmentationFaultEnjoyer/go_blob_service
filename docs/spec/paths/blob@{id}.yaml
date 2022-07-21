@@ -1,0 +1,44 @@
+parameters:
+  - name: id
+    in: path
+    description: Blob identifier
+    required: true
+    schema:
+      type: string
+get:
+  tags:
+    - Blob
+  summary: Blob
+  description: "\n\U0001F512 An admin's signature is needed for private blobs\n"
+  operationId: getBlob
+  responses:
+    '302':
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/components/schemas/Blob'
+    '422':
+      description: failed to get from database
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Errors'
+delete:
+  tags:
+    - Blob
+  summary: Remove Blob
+  description: " \n\n\U0001F512 An admin's signature is needed\n"
+  operationId: deleteBlob
+  responses:
+    '202':
+      description: Success
+    '422':
+      description: failed to delete from database
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Errors'
