@@ -11,7 +11,7 @@ Create blob
 
 Get blob by id
 ---
-	GET     /integrations/testService/blobs/{id}      
+	GET     /integrations/testService/blob/{id}      
 
 Get all blobs
 ---
