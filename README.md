@@ -5,22 +5,18 @@
 	3.run service with "migrate up" args            //to create nessecary tables
 	4.run service with "run service" args          	//to start service
 
-Create user
----
-	POST    /integrations/testService/user					
-
 Create blob
 ---
 	POST    /integrations/testService/blob            
 
 Get blob by id
 ---
-	GET     /integrations/testService/blobs/:id      
+	GET     /integrations/testService/blobs/{id}      
 
-Get all blobs by user id
+Get all blobs
 ---
-	GET     /integrations/testService/blobs/:user_id  
+	GET     /integrations/testService/blob?id={user_id}
 
 Delete blob by id
 ---
-	DELETE  /integrations/testService/blob/:id        
+	DELETE  /integrations/testService/blob/{id}        
