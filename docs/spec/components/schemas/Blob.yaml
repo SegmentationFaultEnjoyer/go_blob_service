@@ -18,4 +18,4 @@ allOf:
           - author
         properties:
           author:
-            $ref: '#/components/schemas/Relation'
+            $ref: '#/components/schemas/AuthorKey'
