@@ -2,7 +2,6 @@ package postgres
 
 import (
 	"database/sql"
-	"fmt"
 
 	"github.com/Masterminds/squirrel"
 	"gitlab.com/distributed_lab/kit/pgdb"
@@ -98,7 +97,6 @@ func (q *Blobs) Delete(id string) error {
 		Where("id = ?", id)
 
 	if err := q.db.Exec(stmt); err != nil {
-		fmt.Println(err.Error())
 		return err
 	}
 
