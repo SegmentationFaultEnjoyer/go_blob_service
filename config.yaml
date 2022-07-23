@@ -10,6 +10,6 @@ listener:
 cop:
   disabled: true
   endpoint: "http://localhost:8082"
-  upstream: "http://localhost:8000"
+  upstream: "http://localhost:8081"
   service_name: testService
   service_port: 80
