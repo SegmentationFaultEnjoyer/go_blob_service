@@ -55,3 +55,34 @@ post:
               required: true
               $ref: '#/components/schemas/Blob'
     required: true
+
+get:
+  tags:
+    - Blob
+  summary: Blob
+  description: "\n\U0001F512 An admin's signature is needed for private blobs\n"
+  operationId: getUserBlobs
+  parameters:
+    in: query
+    name: 'filter[id]'
+    required: false
+    schema:
+      type: string
+  responses:
+    '202':
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Blob'
+    '422':
+      description: failed to get from database
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: '#/components/schemas/Errors'

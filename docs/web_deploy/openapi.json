@@ -101,6 +101,52 @@
           },
           "required": true
         }
+      },
+      "get": {
+        "tags": [
+          "Blob"
+        ],
+        "summary": "Blob",
+        "description": "\n🔒 An admin's signature is needed for private blobs\n",
+        "operationId": "getUserBlobs",
+        "parameters": {
+          "in": "query",
+          "name": "filter[id]",
+          "required": false,
+          "schema": {
+            "type": "string"
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Blob"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "failed to get from database",
+            "content": {
+              "application/vnd.api+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Errors"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/blob/{id}": {
@@ -158,7 +204,7 @@
         "description": " \n\n🔒 An admin's signature is needed\n",
         "operationId": "deleteBlob",
         "responses": {
-          "202": {
+          "204": {
             "description": "Success"
           },
           "422": {
@@ -173,61 +219,28 @@
           }
         }
       }
-    },
-    "/blobs/{user_id}": {
-      "parameters": [
-        {
-          "name": "user_id",
-          "in": "path",
-          "description": "Blobs identifier",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ],
-      "get": {
-        "tags": [
-          "Blob"
-        ],
-        "summary": "Blob",
-        "description": "\n🔒 An admin's signature is needed for private blobs\n",
-        "operationId": "getUserBlobs",
-        "responses": {
-          "202": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Blob"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "failed to get from database",
-            "content": {
-              "application/vnd.api+json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Errors"
-                }
-              }
-            }
-          }
-        }
-      }
     }
   },
   "components": {
     "schemas": {
+      "AuthorKey": {
+        "type": "object",
+        "required": [
+          "id",
+          "type"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "author"
+            ]
+          }
+        }
+      },
       "Blob": {
         "allOf": [
           {
@@ -258,7 +271,7 @@
                 ],
                 "properties": {
                   "author": {
-                    "$ref": "#/components/schemas/Relation"
+                    "$ref": "#/components/schemas/AuthorKey"
                   }
                 }
               }

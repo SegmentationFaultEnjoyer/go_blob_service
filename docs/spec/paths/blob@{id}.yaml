@@ -34,7 +34,7 @@ delete:
   description: " \n\n\U0001F512 An admin's signature is needed\n"
   operationId: deleteBlob
   responses:
-    '202':
+    '204':
       description: Success
     '422':
       description: failed to delete from database
