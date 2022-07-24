@@ -2,12 +2,12 @@ package handlers
 
 import (
 	"net/http"
+	"testService/internal/service/errors"
 	"testService/internal/service/requests"
 	"testService/resources"
 
 	"github.com/go-chi/chi"
 	"gitlab.com/distributed_lab/ape"
-	"gitlab.com/distributed_lab/ape/problems"
 )
 
 const url string = "http://localhost:8081/integrations/testService/blob/"
@@ -19,7 +19,7 @@ func (c *Controller) HandleBlobAdd() http.HandlerFunc {
 
 		if err != nil {
 			c.logger.Error("ERROR GENERATE BLOB")
-			ape.RenderErr(w, problems.InternalError())
+			ape.RenderErr(w, errors.BadRequest("Bad credentials provided"))
 			return
 		}
 
@@ -27,7 +27,7 @@ func (c *Controller) HandleBlobAdd() http.HandlerFunc {
 
 		if err != nil {
 			c.logger.Error("ERROR JSON STRINGIFY")
-			ape.RenderErr(w, problems.InternalError())
+			ape.RenderErr(w, errors.InternalError("Failed to convert to JSON"))
 			return
 		}
 
@@ -35,7 +35,7 @@ func (c *Controller) HandleBlobAdd() http.HandlerFunc {
 
 		if err != nil {
 			c.logger.Error("ERROR ADDING BLOB")
-			ape.RenderErr(w, problems.InternalError())
+			ape.RenderErr(w, errors.UnprocessebleEntity("Failed to add blob to data base"))
 			return
 		}
 
@@ -55,13 +55,13 @@ func (c *Controller) HandleBlobGet() http.HandlerFunc {
 
 		if err != nil {
 			c.logger.Error("ERROR GETTING FROM DB")
-			ape.RenderErr(w, problems.InternalError())
+			ape.RenderErr(w, errors.UnprocessebleEntity("Failed to get from data base"))
 			return
 		}
 
 		if err := requests.JSONToFields(&blob, attributes, relationships, key); err != nil {
 			c.logger.Error("ERROR PARSE JSON")
-			ape.RenderErr(w, problems.InternalError())
+			ape.RenderErr(w, errors.InternalError("Failed to parse json"))
 			return
 		}
 		blob.Key.ID = id
@@ -80,7 +80,7 @@ func (c *Controller) HandleBlobDelete() http.HandlerFunc {
 
 		if err := c.db.Delete(id); err != nil {
 			c.logger.Error("ERROR DELETING BLOB")
-			ape.RenderErr(w, problems.InternalError())
+			ape.RenderErr(w, errors.UnprocessebleEntity("Failed to delete blob"))
 			return
 		}
 
@@ -98,7 +98,7 @@ func (c *Controller) HandleBlobGetAll() http.HandlerFunc {
 		rows, err := c.db.GetAll(id)
 
 		if err != nil {
-			ape.RenderErr(w, problems.InternalError())
+			ape.RenderErr(w, errors.UnprocessebleEntity("Failed to get from data base"))
 			return
 		}
 
@@ -116,13 +116,13 @@ func (c *Controller) HandleBlobGetAll() http.HandlerFunc {
 
 			if err := rows.Scan(&id, &key, &attributes, &relationships); err != nil {
 				c.logger.Error("ERROR ROWS PROCESSING")
-				ape.RenderErr(w, problems.InternalError())
+				ape.RenderErr(w, errors.InternalError("Database rows processing error"))
 				return
 			}
 
 			if err := requests.JSONToFields(&blob, attributes, relationships, key); err != nil {
 				c.logger.Error("ERROR PARSING JSON")
-				ape.RenderErr(w, problems.InternalError())
+				ape.RenderErr(w, errors.InternalError("Failed to parse json"))
 				return
 			}
 
@@ -142,7 +142,8 @@ func (c *Controller) HandleBlobGetAll() http.HandlerFunc {
 		}
 
 		if len(blobs) < 1 {
-			ape.RenderErr(w, problems.InternalError())
+			ape.RenderErr(w, errors.UnprocessebleEntity("Failed to found blobs"))
+			c.logger.Error("NO BLOBS")
 			return
 		}
 
