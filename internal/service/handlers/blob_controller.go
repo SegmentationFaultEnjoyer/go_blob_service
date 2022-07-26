@@ -90,7 +90,7 @@ func HandleBlobDelete(w http.ResponseWriter, r *http.Request) {
 func HandleBlobGetAll(w http.ResponseWriter, r *http.Request) {
 	id := r.URL.Query().Get("author_id")
 
-	links := helpers.GetOffsetLinks(r, pgdb.OffsetPageParams{PageNumber: 1})
+	links := helpers.GetOffsetLinks(r, pgdb.OffsetPageParams{})
 	blobs := make([]resources.Blob, 0)
 
 	var result []data.Blob
