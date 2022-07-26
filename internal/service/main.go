@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"testService/internal/config"
+	"testService/internal/data"
 	"testService/internal/data/postgres"
 
 	"gitlab.com/distributed_lab/kit/copus/types"
@@ -16,7 +17,7 @@ type service struct {
 	log      *logan.Entry
 	copus    types.Copus
 	listener net.Listener
-	db       *postgres.Blobs
+	db       data.Blobs
 }
 
 func (s *service) run() error {
