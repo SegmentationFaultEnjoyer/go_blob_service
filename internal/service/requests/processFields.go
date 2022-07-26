@@ -1,37 +1,43 @@
 package requests
 
 import (
-	"testService/internal/service/helpers"
+	"encoding/json"
+	"testService/internal/data"
 	"testService/resources"
 )
 
-func FieldsToJSON(blob *resources.Blob) ([]byte, []byte, []byte, error) {
-	attributes, err := helpers.JSON_stringify(blob.Attributes)
+func FieldsToJSON(blob *resources.Blob) (*data.Blob, error) {
+	blobData := &data.Blob{}
+	var err error
+
+	blobData.Attributes, err = json.Marshal(blob.Attributes)
 	if err != nil {
-		return nil, nil, nil, err
+		return nil, err
 	}
-	relationships, err := helpers.JSON_stringify(blob.Relationships)
+	blobData.Relationships, err = json.Marshal(blob.Relationships)
 	if err != nil {
-		return nil, nil, nil, err
+		return nil, err
 	}
-	key, err := helpers.JSON_stringify(blob.Key)
+	blobData.Key, err = json.Marshal(blob.Key)
 	if err != nil {
-		return nil, nil, nil, err
+		return nil, err
 	}
 
-	return attributes, relationships, key, nil
+	return blobData, nil
 }
 
-func JSONToFields(blob *resources.Blob, attributes []byte, relationships []byte, key []byte) error {
-	if err := helpers.JSON_parse(attributes, &blob.Attributes); err != nil {
+func JSONToFields(blob *resources.Blob, blobData *data.Blob) error {
+	if err := json.Unmarshal(blobData.Attributes, &blob.Attributes); err != nil {
 		return err
 	}
-	if err := helpers.JSON_parse(relationships, &blob.Relationships); err != nil {
+	if err := json.Unmarshal(blobData.Relationships, &blob.Relationships); err != nil {
 		return err
 	}
-	if err := helpers.JSON_parse(key, &blob.Key); err != nil {
+	if err := json.Unmarshal(blobData.Key, &blob.Key); err != nil {
 		return err
 	}
+
+	blob.Key.ID = blobData.ID
 
 	return nil
 }

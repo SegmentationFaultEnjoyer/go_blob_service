@@ -21,8 +21,8 @@ get:
             properties:
               data:
                 $ref: '#/components/schemas/Blob'
-    '422':
-      description: failed to get from database
+    '400':
+      description: bad request
       content:
         application/vnd.api+json:
           schema:
@@ -42,8 +42,8 @@ delete:
   responses:
     '204':
       description: Success
-    '422':
-      description: failed to delete from database
+    '400':
+      description: bad request
       content:
         application/vnd.api+json:
           schema:

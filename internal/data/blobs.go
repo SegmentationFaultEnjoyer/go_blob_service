@@ -1,10 +1,16 @@
 package data
 
-import "database/sql"
-
 type Blobs interface {
-	Create(string, []byte, []byte, []byte) (string, error)
-	Get(string) ([]byte, []byte, []byte, error)
-	GetAll(string) (*sql.Rows, error)
+	Create(string, *Blob) (string, error)
+	Get(string) (*Blob, error)
+	GetAll() ([]Blob, error)
 	Delete(string) error
+	FilterByID(string) Blobs
+}
+
+type Blob struct {
+	ID            string `db:"id"`
+	Key           []byte `db:"key"`
+	Attributes    []byte `db:"attributes"`
+	Relationships []byte `db:"relationships"`
 }

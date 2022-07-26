@@ -1,14 +1,13 @@
 package service
 
 import (
-	"fmt"
 	"net"
 	"net/http"
 
 	"testService/internal/config"
+	"testService/internal/data/postgres"
 
 	"gitlab.com/distributed_lab/kit/copus/types"
-	"gitlab.com/distributed_lab/kit/pgdb"
 	"gitlab.com/distributed_lab/logan/v3"
 	"gitlab.com/distributed_lab/logan/v3/errors"
 )
@@ -17,7 +16,7 @@ type service struct {
 	log      *logan.Entry
 	copus    types.Copus
 	listener net.Listener
-	db       *pgdb.DB
+	db       *postgres.Blobs
 }
 
 func (s *service) run() error {
@@ -28,7 +27,7 @@ func (s *service) run() error {
 	if err := s.copus.RegisterChi(r); err != nil {
 		return errors.Wrap(err, "cop failed")
 	}
-	fmt.Println("SERVICE STARTED")
+
 	return http.Serve(s.listener, r)
 }
 
@@ -38,7 +37,7 @@ func newService(cfg config.Config) *service {
 		log:      cfg.Log(),
 		copus:    cfg.Copus(),
 		listener: cfg.Listener(),
-		db:       cfg.DB(),
+		db:       postgres.New(cfg.DB()),
 	}
 }
 

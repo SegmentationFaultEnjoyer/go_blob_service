@@ -1,5 +1,6 @@
 log:
   disable_sentry: true
+  level: info
 
 db:
   url: postgres://mark:123@localhost:5432/testdb?sslmode=disable
