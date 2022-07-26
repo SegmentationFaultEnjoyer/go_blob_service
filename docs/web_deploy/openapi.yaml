@@ -72,13 +72,13 @@ paths:
       description: "\n\U0001F512 An admin's signature is needed for private blobs\n"
       operationId: getUserBlobs
       parameters:
-        in: query
-        name: 'filter[id]'
-        required: false
-        schema:
-          type: string
+        - in: query
+          name: 'filter[author_id]'
+          required: false
+          schema:
+            type: string
       responses:
-        '202':
+        '302':
           description: Success
           content:
             application/json:
@@ -91,6 +91,12 @@ paths:
                       $ref: '#/components/schemas/Blob'
         '422':
           description: failed to get from database
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '500':
+          description: internal server error
           content:
             application/vnd.api+json:
               schema:
@@ -125,6 +131,12 @@ paths:
             application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/Errors'
+        '500':
+          description: internal server error
+          content:
+            application/vnd.api+json:
+              schema:
+                $ref: '#/components/schemas/Errors'
     delete:
       tags:
         - Blob
@@ -153,7 +165,7 @@ components:
         type:
           type: string
           enum:
-            - author
+            - author_key
     Blob:
       allOf:
         - $ref: '#/components/schemas/BlobKey'
@@ -175,7 +187,10 @@ components:
                 - author
               properties:
                 author:
-                  $ref: '#/components/schemas/AuthorKey'
+                  type: object
+                  properties:
+                    data:
+                      author_key: 1
     BlobKey:
       type: object
       required:

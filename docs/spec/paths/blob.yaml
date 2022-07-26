@@ -63,7 +63,7 @@ get:
   operationId: getUserBlobs
   parameters:
     - in: query
-      name: 'filter[id]'
+      name: 'filter[author_id]'
       required: false
       schema:
         type: string

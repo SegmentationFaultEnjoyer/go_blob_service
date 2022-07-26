@@ -8,6 +8,6 @@ type ResourceType string
 
 // List of ResourceType
 const (
-	AUTHOR ResourceType = "author"
-	BLOB   ResourceType = "blob"
+	AUTHOR_KEY ResourceType = "author_key"
+	BLOB       ResourceType = "blob"
 )
