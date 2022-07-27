@@ -32,12 +32,6 @@ paths:
             application/vnd.api+json:
               schema:
                 $ref: '#/components/schemas/Errors'
-        '422':
-          description: failed blob adding to database
-          content:
-            application/vnd.api+json:
-              schema:
-                $ref: '#/components/schemas/Errors'
         '500':
           description: failed to generate blob
           content:
@@ -89,8 +83,8 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/Blob'
-        '422':
-          description: failed to get from database
+        '400':
+          description: bad request
           content:
             application/vnd.api+json:
               schema:
@@ -125,8 +119,8 @@ paths:
                 properties:
                   data:
                     $ref: '#/components/schemas/Blob'
-        '422':
-          description: failed to get from database
+        '400':
+          description: bad request
           content:
             application/vnd.api+json:
               schema:
@@ -146,8 +140,8 @@ paths:
       responses:
         '204':
           description: Success
-        '422':
-          description: failed to delete from database
+        '400':
+          description: bad request
           content:
             application/vnd.api+json:
               schema:

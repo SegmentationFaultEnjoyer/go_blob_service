@@ -41,6 +41,7 @@ require (
 	gitlab.com/distributed_lab/logan v3.8.0+incompatible // indirect
 	gitlab.com/distributed_lab/lorem v0.2.0 // indirect
 	gitlab.com/distributed_lab/running v0.0.0-20200706131153-4af0e83eb96c // indirect
+	gitlab.com/distributed_lab/urlval v3.0.0+incompatible // indirect
 	golang.org/x/sys v0.0.0-20210809222454-d867a43fc93e // indirect
 	golang.org/x/text v0.3.6 // indirect
 	gopkg.in/ini.v1 v1.62.0 // indirect

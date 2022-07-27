@@ -67,6 +67,11 @@ func (q *Blobs) FilterByID(id string) data.Blobs {
 	return q
 }
 
+func (q *Blobs) Page(pageParams pgdb.OffsetPageParams) data.Blobs {
+	q.stmt = pageParams.ApplyTo(q.stmt, "id")
+	return q
+}
+
 func (q *Blobs) GetAll() ([]data.Blob, error) {
 	var results []data.Blob
 

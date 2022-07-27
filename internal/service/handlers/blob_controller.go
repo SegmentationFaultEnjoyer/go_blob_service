@@ -88,20 +88,19 @@ func HandleBlobDelete(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandleBlobGetAll(w http.ResponseWriter, r *http.Request) {
-	id := r.URL.Query().Get("author_id")
+	request, err := requests.GetBlobListRequest(r)
+
+	if err != nil {
+		Log(r).WithError(err).Info("Error parsing request")
+		ape.RenderErr(w, problems.BadRequest(err)...)
+		return
+	}
 
 	links := helpers.GetOffsetLinks(r, pgdb.OffsetPageParams{})
 	blobs := make([]resources.Blob, 0)
 
-	var result []data.Blob
-	var err error
-
-	if id == "" {
-		result, err = DB(r).GetAll()
-	} else {
-		result, err = DB(r).FilterByID(id).GetAll()
-
-	}
+	applyFilters(DB(r), request)
+	result, err := DB(r).GetAll()
 
 	if err != nil {
 		Log(r).WithError(err).Info("Failed to get from data base")
@@ -129,4 +128,13 @@ func HandleBlobGetAll(w http.ResponseWriter, r *http.Request) {
 		Included: resources.Included{},
 		Links:    links,
 	})
+}
+
+func applyFilters(q data.Blobs, request requests.BlobListRequest) {
+	q.Page(request.OffsetPageParams)
+
+	if request.FilterAuthor != nil {
+		q.FilterByID(*request.FilterAuthor)
+	}
+
 }
