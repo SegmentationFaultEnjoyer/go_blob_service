@@ -15,7 +15,7 @@ Get blob by id
 
 Get all blobs
 ---
-	GET     /integrations/testService/blob?id={user_id}
+	GET     /integrations/testService/blob?filter?[author_id]={author_id}
 
 Delete blob by id
 ---
